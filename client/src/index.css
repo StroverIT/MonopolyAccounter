@@ -1,4 +1,4 @@
-body {
+/* body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -10,4 +10,35 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+} */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .gray-white {
+    background-color: theme(colors.gray.DEFAULT);
+    color: theme(colors.white.DEFAULT);
+  }
+  .gray-primary {
+    background-color: theme(colors.gray.DEFAULT);
+    color: theme(colors.primary.DEFAULT);
+  }
+  .primary200-white {
+    background-color: theme(colors.primary.200);
+    color: theme(colors.white.DEFAULT);
+  }
+  .primary-dark {
+    background-color: theme(colors.primary.DEFAULT);
+    color: theme(colors.bg-color);
+  }
+}
+
+body {
+  background-color: #0b0c10;
+}
+select[editable] > button {
+  color: red !important;
+  stroke: #f00 !important;
 }
