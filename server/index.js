@@ -1,8 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-
 const app = express();
+
+const http = require("http").Server(app);
+const io = require("socket.io")(http, {
+  origin: "http:/localhost:3000",
+});
+
 require("dotenv").config();
 
 app.use(cors());
@@ -20,6 +25,13 @@ mongoose
     console.log(err);
   });
 
-const server = app.listen(process.env.PORT || 8080, () => {
+http.listen(process.env.PORT || 8080, () => {
   console.log(`App is running on port ${process.env.PORT}`);
 });
+
+// const io = socket(server, {
+//   cors: {
+//     origin: "http:/localhost:3000",
+//     credentials: true,
+//   },
+// });
