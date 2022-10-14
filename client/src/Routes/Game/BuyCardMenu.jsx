@@ -34,7 +34,7 @@ export default function BuyCardMenu() {
           <h2 className="text-lg text-primary-100">{user.fullName}</h2>
           <h5 className="text-sm text-white">{user.icon}</h5>
         </div>
-        <MoneyDisplay money={user.money} networth={user.networth} />
+        <MoneyDisplay />
         <div className="bg-gray-100 ">
           <div
             className={`w-full ${cardForBuying.color} text-center py-4 text-xl font-bold`}
