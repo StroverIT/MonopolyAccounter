@@ -58,6 +58,13 @@ io.on("connection", (socket) => {
     const { fullName, icon, lobbyId, socketId } = JSON.parse(data);
 
     const user = await User.create({ fullName, icon, socketId });
+    const lobby = await Lobby.findOne({ _id: lobbyId }).lean();
+    if (lobby.joinedPlayers.length >= 6) {
+      cb({
+        status: "full",
+      });
+      return;
+    }
     await Lobby.updateOne(
       { _id: lobbyId },
       { $push: { joinedPlayers: user._id } }
@@ -77,11 +84,11 @@ io.on("connection", (socket) => {
       lobbies,
     });
   });
-  socket.on("start-game", (data, cb) => {
+  socket.on("start-game", async (data, cb) => {
     console.log(data);
 
     const { lobby } = JSON.parse(data);
-
+    await Lobby.updateOne({ _id: lobby }, { $set: { isGameStarted: true } });
     socket.broadcast.to(lobby).emit("change-to-menu", {
       page: `/game/${lobby}`,
     });
@@ -101,7 +108,16 @@ io.on("connection", (socket) => {
   socket.on("refresh-money-fn", async (data) => {
     const { lobbyId, userId } = JSON.parse(data);
     const user = await User.findOne({ _id: userId }).select("money networth");
-    socket.local.to(lobbyId.toString()).emit("refresh-money-all", {
+    socket.in(lobbyId.toString()).emit("refresh-money-all", {
+      user,
+    });
+  });
+  socket.on("get-game-user-fn", async (data) => {
+    const { lobbyId, userId } = JSON.parse(data);
+    console.log(lobbyId, userId);
+    const user = await User.findOne({ _id: userId }).select("-money -networth");
+
+    socket.in(lobbyId.toString()).emit("get-game-user", {
       user,
     });
   });
