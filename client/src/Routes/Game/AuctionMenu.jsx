@@ -47,7 +47,7 @@ export default function AuctionMenu() {
           <h2 className="text-lg text-primary-100">{user.fullName}</h2>
           <h5 className="text-sm text-white">{user.icon}</h5>
         </div>
-        <MoneyDisplay money={user.money} networth={user.networth} />
+        <MoneyDisplay />
         <div className="flex justify-between px-2">
           <div className="text-white text-xs">
             Заложена цена:
