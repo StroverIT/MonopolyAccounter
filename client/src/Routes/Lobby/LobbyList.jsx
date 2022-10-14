@@ -10,8 +10,13 @@ export default function LobbyList() {
   const [lobbies, setLobbies] = useState([]);
   useEffect(() => {
     socket.emit("get-lobbies", (response) => {
-      const formatted = response.lobbies.map((lobby) => {
-        return { ...lobby, joined: lobby.joinedPlayers.length };
+      const formatted = [];
+      response.lobbies.forEach((lobby) => {
+        if (lobby.isGameStarted) return;
+        formatted.push({
+          ...lobby,
+          joined: lobby.joinedPlayers.length,
+        });
       });
       setLobbies(formatted);
     });

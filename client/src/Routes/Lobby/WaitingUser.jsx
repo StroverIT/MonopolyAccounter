@@ -46,7 +46,6 @@ export default function WaitingUser() {
     const data = JSON.stringify({ lobby: id });
     socket.emit("start-game", data, (response) => {
       const pageRed = `${response.page}#${currUser._id}`;
-      console.log(pageRed);
       navigate(pageRed);
     });
   };

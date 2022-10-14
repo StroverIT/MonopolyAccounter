@@ -20,7 +20,7 @@ export default function Card({
         ></div>
         <div>{calcTotal}</div>
       </div>
-      {properties.map((property) => {
+      {properties?.map((property) => {
         return (
           <div key={property._id} className="flex items-center   ">
             <div

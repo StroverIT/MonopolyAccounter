@@ -18,6 +18,8 @@ export default function MoneyDisplay() {
 
   useEffect(() => {
     socket.on("refresh-money-all", (res) => {
+      console.log(res);
+
       const user = res.user;
       if (user) {
         setData({ money: user.money, networth: user.networth });
@@ -26,16 +28,11 @@ export default function MoneyDisplay() {
     return () => {
       socket.off("refresh-money-all");
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-    socket.emit(
-      "refresh-money-fn",
-      JSON.stringify({ userId, lobbyId }),
-      (res) => {
-        const data = res.user;
-        setData({ money: data.money, networth: data.networth });
-      }
-    );
+    socket.emit("refresh-money-fn", JSON.stringify({ userId, lobbyId }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="my-5  text-gray-100">

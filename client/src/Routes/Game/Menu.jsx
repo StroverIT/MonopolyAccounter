@@ -1,56 +1,41 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 
 // Icons
 import { GiHamburgerMenu } from "react-icons/gi";
 import { GrHistory } from "react-icons/gr";
+import { useParams } from "react-router-dom";
 import Card from "../../Components/Game/Card";
 import MoneyDisplay from "../../Components/Game/MoneyDisplay";
+import { SocketContext } from "../../Routes/socketContext";
 
 export default function Main() {
+  const userId = window.location.href.toString().split("#")[1];
+  let { userId: lobbyId } = useParams();
+
+  const { socket } = useContext(SocketContext);
+
   const [data, setData] = useState({
-    name: "Emil Zlatinov",
+    fullName: "Emil Zlatinov",
     role: "player",
     icon: "Китайски Дракон",
-    money: 15000000,
-    networth: 15000000,
+    cards: [],
     // rollTurn: 3,
-    cards: [
-      {
-        total: 2,
-        totalOwn: 1,
-        color: "bg-cardColors-brown",
-        upgrade: { mil: 0, k: 500 },
-        downgrade: { mil: 0, k: 250 },
-        _id: "1Brown",
-        properties: [
-          {
-            houses: 0,
-            hotel: 0,
-            name: "Гдиня",
-
-            _id: "1gdinq",
-          },
-        ],
-      },
-      {
-        total: "3",
-        totalOwn: "2",
-        color: "bg-cardColors-lightBlue",
-        _id: "123",
-        properties: [
-          {
-            houses: 0,
-            hotel: 0,
-            name: "Гдиня",
-            _id: "2131",
-          },
-        ],
-      },
-    ],
   });
   const cardsVar = data?.cards;
-
+  useEffect(() => {
+    socket.on("get-game-user", (res) => {
+      console.log("res", res);
+      const data = res.user;
+      setData(data);
+    });
+    return () => {
+      socket.off("get-game-user");
+    };
+  }, []);
+  useEffect(() => {
+    socket.emit("get-game-user-fn", JSON.stringify({ userId, lobbyId }));
+  }, []);
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="w-10/12 bg-gray h-5/6">
@@ -60,7 +45,7 @@ export default function Main() {
           </div>
           <div>
             <div className="text-xl text-primary-100 text-bold">
-              {data.name}
+              {data.fullName}
             </div>
             <div className="text-xs text-center text-white">{data.icon}</div>
           </div>
@@ -76,10 +61,10 @@ export default function Main() {
           {data.cards.map((card) => {
             return (
               <Card
-                bgColor={card.color}
-                total={card.total}
-                ownTotal={card.totalOwn}
-                properties={card.properties}
+                bgColor={card?.color}
+                total={card?.total}
+                ownTotal={card?.totalOwn}
+                properties={card?.properties}
               />
             );
           })}
