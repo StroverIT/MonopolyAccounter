@@ -5,15 +5,16 @@ import { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { GrHistory } from "react-icons/gr";
 import Card from "../../Components/Game/Card";
+import MoneyDisplay from "../../Components/Game/MoneyDisplay";
 
 export default function Main() {
   const [data, setData] = useState({
     name: "Emil Zlatinov",
     role: "player",
     icon: "Китайски Дракон",
-    money: { mil: 15, k: 0 },
-    networth: { mil: 15, k: 0 },
-    rollTurn: 3,
+    money: 15000000,
+    networth: 15000000,
+    // rollTurn: 3,
     cards: [
       {
         total: 2,
@@ -68,19 +69,7 @@ export default function Main() {
           </div>
         </div>
         <div className="my-5 text-xs text-gray-100">
-          <div>
-            Money: <span className="pl-1 text-white">{data.money.mil}M</span>{" "}
-            <span className="pl-1 text-white">{data.money.k}k</span>
-          </div>
-          <div>
-            Networth:{" "}
-            <span className="pl-1 text-white">{data.networth.mil}M</span>{" "}
-            <span className="pl-1 text-white">{data.networth.k}k</span>
-          </div>
-          <div>
-            Turn for roll of the dice:
-            <span className="text-white">{data.rollTurn}</span>
-          </div>
+          <MoneyDisplay />
         </div>
         <h3 className="mb-4 text-xl text-center text-primary-100">Cards</h3>
         <div className="grid grid-cols-2 px-2">
