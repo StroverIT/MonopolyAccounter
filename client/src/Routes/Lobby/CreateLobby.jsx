@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 // Components
 import Input from "../../Components/Input";
@@ -6,10 +6,20 @@ import Input from "../../Components/Input";
 // Icons
 import { GrReturn } from "react-icons/gr";
 import { Link } from "react-router-dom";
+import Button from "../../Components/Button";
+
+// Context
+import { SocketContext } from "../socketContext";
+// Navigatin
+import { useNavigate } from "react-router-dom";
 
 export default function CreateLobby() {
+  let navigate = useNavigate();
+
+  const { socket } = useContext(SocketContext);
+
   const [inputsForm, setInputsForm] = useState({
-    nickname: "",
+    lobbyName: "",
     fullName: "",
     icon: "",
   });
@@ -19,7 +29,21 @@ export default function CreateLobby() {
       [e.target.name]: e.target.value,
     }));
   };
-
+  const submitHandler = async (e) => {
+    socket.emit(
+      "create-lobby",
+      JSON.stringify({
+        lobbyName: inputsForm.lobbyName,
+        fullName: inputsForm.fullName,
+        icon: inputsForm.icon,
+        socketId: socket.id,
+      }),
+      (response) => {
+        socket.emit("refresh-lobbies", () => {});
+        navigate(`/lobby/${response.lobby._id}#${response.creatorId}`);
+      }
+    );
+  };
   return (
     <div className="flex items-center justify-center h-screen ">
       <div className="w-10/12 bg-gray h-5/6 ">
@@ -51,11 +75,14 @@ export default function CreateLobby() {
           <div className="">
             <Input
               onChange={inputHandler}
-              name="nickname"
-              placeholder="Nickname"
-              value={inputsForm.nickname}
+              name="lobbyName"
+              placeholder="LobbyName"
+              value={inputsForm.lobbyName}
             />
           </div>
+          <Button onClick={submitHandler} theme="primary200-white">
+            Create Lobby
+          </Button>
         </div>
       </div>
     </div>
