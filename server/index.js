@@ -112,12 +112,11 @@ io.on("connection", (socket) => {
       user,
     });
   });
-  socket.on("get-game-user-fn", async (data) => {
+  socket.on("get-game-user", async (data, cb) => {
     const { lobbyId, userId } = JSON.parse(data);
-    console.log(lobbyId, userId);
     const user = await User.findOne({ _id: userId }).select("-money -networth");
 
-    socket.in(lobbyId.toString()).emit("get-game-user", {
+    cb({
       user,
     });
   });

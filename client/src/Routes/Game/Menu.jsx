@@ -23,18 +23,12 @@ export default function Main() {
     // rollTurn: 3,
   });
   const cardsVar = data?.cards;
+
   useEffect(() => {
-    socket.on("get-game-user", (res) => {
-      console.log("res", res);
-      const data = res.user;
-      setData(data);
+    socket.emit("get-game-user", JSON.stringify({ userId, lobbyId }), (res) => {
+      const user = res.user;
+      setData(user);
     });
-    return () => {
-      socket.off("get-game-user");
-    };
-  }, []);
-  useEffect(() => {
-    socket.emit("get-game-user-fn", JSON.stringify({ userId, lobbyId }));
   }, []);
   return (
     <div className="flex items-center justify-center h-screen">
