@@ -17,8 +17,8 @@ export default function MoneyDisplay() {
   });
 
   useEffect(() => {
-    socket.on("refresh-money-all", (res) => {
-      console.log(res);
+    socket.on("refresh-money", (res) => {
+      console.log("money", res);
 
       const user = res.user;
       if (user) {
@@ -31,11 +31,17 @@ export default function MoneyDisplay() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-    socket.emit("refresh-money-fn", JSON.stringify({ userId, lobbyId }));
+    socket.emit(
+      "money-init",
+      JSON.stringify({ userId, lobbyId }, (res) => {
+        const money = res.money;
+        setData(money);
+      })
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="my-5  text-gray-100">
+    <div className="my-5 text-gray-100">
       <div>
         Money: <span className="pl-1 text-white">{format(data.money)}</span>
       </div>

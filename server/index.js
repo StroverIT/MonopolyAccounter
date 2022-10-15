@@ -105,15 +105,16 @@ io.on("connection", (socket) => {
       newLobby,
     });
   });
-  socket.on("refresh-money-fn", async (data) => {
-    const { lobbyId, userId } = JSON.parse(data);
+  socket.on("money-init", async (data, cb) => {
+    const { userId } = JSON.parse(data);
     const user = await User.findOne({ _id: userId }).select("money networth");
-    socket.in(lobbyId.toString()).emit("refresh-money-all", {
-      user,
+
+    cb({
+      money: user,
     });
   });
   socket.on("get-game-user", async (data, cb) => {
-    const { lobbyId, userId } = JSON.parse(data);
+    const { userId } = JSON.parse(data);
     const user = await User.findOne({ _id: userId }).select("-money -networth");
 
     cb({
