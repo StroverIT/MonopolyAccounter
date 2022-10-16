@@ -19,27 +19,25 @@ export default function MoneyDisplay() {
   useEffect(() => {
     socket.on("refresh-money", (res) => {
       console.log("money", res);
-
-      const user = res.user;
-      if (user) {
-        setData({ money: user.money, networth: user.networth });
+      const users = res.users.joinedPlayers;
+      const found = users.find((user) => user._id.toString() === userId);
+      if (found) {
+        setData({ money: found.money, networth: found.networth });
       }
     });
+    const data = JSON.stringify({ userId });
+
+    socket.emit("money-init", data, (res) => {
+      const money = res.money;
+      setData(money);
+    });
+
     return () => {
-      socket.off("refresh-money-all");
+      socket.off("refresh-money");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  useEffect(() => {
-    socket.emit(
-      "money-init",
-      JSON.stringify({ userId, lobbyId }, (res) => {
-        const money = res.money;
-        setData(money);
-      })
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
   return (
     <div className="my-5 text-gray-100">
       <div>
