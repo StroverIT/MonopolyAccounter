@@ -1,0 +1,476 @@
+export const cards = [
+  {
+    color: "brown",
+    colorToDisplay: "bg-color-brown",
+    upgrade: 500000,
+    downgrade: 250000,
+  },
+  {
+    color: "lightBlue",
+    colorToDisplay: "bg-cardColors-lightBlue",
+    upgrade: 500000,
+    downgrade: 250000,
+  },
+  {
+    color: "pink",
+    colorToDisplay: "bg-cardColors-pink",
+    upgrade: 1000000,
+    downgrade: 500000,
+  },
+  {
+    color: "orange",
+    colorToDisplay: "bg-cardColors-orange",
+    upgrade: 1000000,
+    downgrade: 500000,
+  },
+  {
+    color: "red",
+    colorToDisplay: "bg-cardColors-red",
+    upgrade: 1500000,
+    downgrade: 750000,
+  },
+  {
+    color: "yellow",
+    colorToDisplay: "bg-cardColors-yellow",
+    upgrade: 1500000,
+    downgrade: 750000,
+  },
+  {
+    color: "green",
+    colorToDisplay: "bg-cardColors-green",
+    upgrade: 2000000,
+    downgrade: 1000000,
+  },
+  {
+    color: "blue",
+    colorToDisplay: "bg-cardColors-blue",
+    upgrade: 2000000,
+    downgrade: 1000000,
+  },
+  {
+    color: "transport",
+    colorToDisplay: "bg-cardColors-transport",
+  },
+  {
+    color: "power_plant",
+    colorToDisplay: "bg-cardColors-power_plant",
+  },
+];
+export const properties = {
+  0: {
+    type: "giveMoney",
+    quantity: 2000000,
+  },
+  1: {
+    type: "property",
+    color: "brown",
+    name: "Гдиня",
+    priceBuy: 600000,
+    price: 20000,
+    oneHouse: 100000,
+    twoHouses: 300000,
+    threeHouses: 900000,
+    fourHouses: 1600000,
+    hotel: 2500000,
+    mortgagePrice: 300000,
+  },
+  2: {
+    type: "none",
+  },
+  3: {
+    type: "property",
+    color: "brown",
+
+    name: "Тайпе",
+    priceBuy: 600000,
+
+    price: 40000,
+    oneHouse: 200000,
+    twoHouses: 600000,
+    threeHouses: 1800000,
+    fourHouses: 3200000,
+    hotel: 4500000,
+    mortgagePrice: 300000,
+  },
+  4: {
+    type: "tax",
+    quantity: 2000000,
+  },
+  5: {
+    type: "transport",
+    name: `Железница "Монопол"`,
+    priceBuy: 2000000,
+    price: 250000,
+    twoTransport: 500000,
+    threeTransport: 1000000,
+    fourTransport: 2000000,
+    mortgagePrice: 1000000,
+  },
+  6: {
+    type: "property",
+    priceBuy: 1000000,
+    color: "lightBlue",
+    name: "Токио",
+    price: 60000,
+    oneHouse: 300000,
+    twoHouses: 900000,
+    threeHouses: 2700000,
+    fourHouses: 4000000,
+    hotel: 5500000,
+    mortgagePrice: 500000,
+  },
+  7: {
+    type: "none",
+  },
+  8: {
+    type: "property",
+    color: "lightBlue",
+
+    name: "Барселона",
+    priceBuy: 1000000,
+
+    price: 60000,
+    oneHouse: 300000,
+    twoHouses: 900000,
+    threeHouses: 2700000,
+    fourHouses: 4000000,
+    hotel: 5500000,
+    mortgagePrice: 500000,
+  },
+  9: {
+    type: "property",
+    color: "lightBlue",
+
+    name: "Атина",
+    priceBuy: 1200000,
+
+    price: 80000,
+    oneHouse: 400000,
+    twoHouses: 1000000,
+    threeHouses: 3000000,
+    fourHouses: 4500000,
+    hotel: 6000000,
+    mortgagePrice: 600000,
+  },
+  10: {
+    type: "none",
+  },
+  11: {
+    type: "property",
+    color: "pink",
+
+    name: "Инстанбул",
+    priceBuy: 1400000,
+
+    price: 100000,
+    oneHouse: 500000,
+    twoHouses: 1500000,
+    threeHouses: 4500000,
+    fourHouses: 6250000,
+    hotel: 7500000,
+    mortgagePrice: 700000,
+  },
+  12: {
+    type: "power_plant",
+    name: `Слънчева Електроцентрала`,
+    priceBuy: 1500000,
+
+    price: 4,
+    oneHouse: 10,
+    mortgagePrice: 750000,
+  },
+  13: {
+    type: "property",
+    color: "pink",
+
+    name: "Киев",
+    priceBuy: 1400000,
+
+    price: 100000,
+    oneHouse: 500000,
+    twoHouses: 1500000,
+    threeHouses: 4500000,
+    fourHouses: 6250000,
+    hotel: 7500000,
+    mortgagePrice: 700000,
+  },
+  14: {
+    type: "property",
+    color: "pink",
+
+    name: "Торонто",
+    priceBuy: 1600000,
+
+    price: 120000,
+    oneHouse: 600000,
+    twoHouses: 1800000,
+    threeHouses: 5000000,
+    fourHouses: 7000000,
+    hotel: 9000000,
+    mortgagePrice: 800000,
+  },
+  15: {
+    type: "transport",
+    name: "Еър Монопол",
+    priceBuy: 2000000,
+
+    price: 250000,
+    twoTransport: 500000,
+    threeTransport: 1000000,
+    fourTransport: 2000000,
+    mortgagePrice: 1000000,
+  },
+  16: {
+    type: "property",
+    color: "orange",
+
+    name: "Рим",
+    priceBuy: 1800000,
+
+    price: 140000,
+    oneHouse: 700000,
+    twoHouses: 2000000,
+    threeHouses: 5500000,
+    fourHouses: 7500000,
+    hotel: 9500000,
+    mortgagePrice: 900000,
+  },
+  17: {
+    type: "none",
+  },
+  18: {
+    type: "property",
+    color: "orange",
+
+    name: "Шанхай",
+    priceBuy: 1800000,
+
+    price: 140000,
+    oneHouse: 700000,
+    twoHouses: 2000000,
+    threeHouses: 5500000,
+    fourHouses: 7500000,
+    hotel: 9500000,
+    mortgagePrice: 900000,
+  },
+  19: {
+    type: "property",
+    color: "orange",
+
+    name: "Ванкувър",
+    priceBuy: 2000000,
+
+    price: 160000,
+    oneHouse: 800000,
+    twoHouses: 2200000,
+    threeHouses: 6000000,
+    fourHouses: 8000000,
+    hotel: 10000000,
+    mortgagePrice: 1000000,
+  },
+  20: { type: "none" },
+  21: {
+    type: "property",
+    color: "red",
+
+    name: "Сидни",
+    priceBuy: 2200000,
+
+    price: 180000,
+    oneHouse: 900000,
+    twoHouses: 2500000,
+    threeHouses: 7000000,
+    fourHouses: 8750000,
+    hotel: 10500000,
+    mortgagePrice: 1100000,
+  },
+  22: { type: "none" },
+  23: {
+    type: "property",
+    color: "red",
+
+    name: "Ню Йорк",
+    priceBuy: 2200000,
+
+    price: 180000,
+    oneHouse: 900000,
+    twoHouses: 2500000,
+    threeHouses: 7000000,
+    fourHouses: 8750000,
+    hotel: 10500000,
+    mortgagePrice: 1100000,
+  },
+  24: {
+    type: "property",
+    color: "red",
+
+    name: "Лондон",
+    priceBuy: 2400000,
+
+    price: 200000,
+    oneHouse: 1000000,
+    twoHouses: 3000000,
+    threeHouses: 7500000,
+    fourHouses: 9250000,
+    hotel: 11000000,
+    mortgagePrice: 1200000,
+  },
+  25: {
+    type: "transport",
+    name: `Круиз "Монопол"`,
+    priceBuy: 2000000,
+
+    price: 250000,
+    twoTransport: 500000,
+    threeTransport: 1000000,
+    fourTransport: 2000000,
+    mortgagePrice: 1000000,
+  },
+  26: {
+    type: "property",
+    color: "yellow",
+
+    name: "Пекин",
+    priceBuy: 2600000,
+
+    price: 200000,
+    oneHouse: 1100000,
+    twoHouses: 3300000,
+    threeHouses: 8000000,
+    fourHouses: 9750000,
+    hotel: 11500000,
+    mortgagePrice: 1300000,
+  },
+  27: {
+    type: "property",
+    color: "yellow",
+
+    name: "Хонконг",
+    priceBuy: 2600000,
+
+    price: 220000,
+    oneHouse: 1100000,
+    twoHouses: 3300000,
+    threeHouses: 8000000,
+    fourHouses: 9750000,
+    hotel: 11500000,
+    mortgagePrice: 1300000,
+  },
+  28: {
+    type: "power_plant",
+    name: "Вятърна Електроцентрала",
+    priceBuy: 1500000,
+
+    price: 4,
+    oneHouse: 10,
+
+    mortgagePrice: 750000,
+  },
+  29: {
+    type: "property",
+    color: "yellow",
+
+    name: "Йерусалим",
+    priceBuy: 2800000,
+
+    price: 240000,
+    oneHouse: 1200000,
+    twoHouses: 3600000,
+    threeHouses: 8500000,
+    fourHouses: 10250000,
+    hotel: 12000000,
+    mortgagePrice: 1400000,
+  },
+  30: {
+    type: "jail",
+    goToIndex: 10,
+  },
+  31: {
+    type: "property",
+    priceBuy: 3000000,
+    color: "green",
+
+    name: "Париж",
+    price: 260000,
+    oneHouse: 1300000,
+    twoHouses: 3900000,
+    threeHouses: 9000000,
+    fourHouses: 11000000,
+    hotel: 12750000,
+    mortgagePrice: 1500000,
+  },
+  32: {
+    type: "property",
+    color: "green",
+
+    name: "Белград",
+    priceBuy: 3000000,
+
+    price: 260000,
+    oneHouse: 1300000,
+    twoHouses: 3900000,
+    threeHouses: 9000000,
+    fourHouses: 11000000,
+    hotel: 12750000,
+    mortgagePrice: 1500000,
+  },
+  33: { type: "none" },
+  34: {
+    type: "property",
+    color: "green",
+
+    name: "Кейптаун",
+    priceBuy: 3200000,
+
+    price: 280000,
+    oneHouse: 1500000,
+    twoHouses: 4500000,
+    threeHouses: 10000000,
+    fourHouses: 12000000,
+    hotel: 14000000,
+    mortgagePrice: 1600000,
+  },
+  35: {
+    type: "transport",
+    name: `Космическа Разходка "Монопол"`,
+    priceBuy: 2000000,
+
+    price: 250000,
+    twoTransport: 500000,
+    threeTransport: 1000000,
+    fourTransport: 2000000,
+    mortgagePrice: 1000000,
+  },
+  36: { type: "none" },
+  37: {
+    type: "property",
+    color: "blue",
+
+    name: "Рига",
+    priceBuy: 3500000,
+
+    price: 350000,
+    oneHouse: 1750000,
+    twoHouses: 5000000,
+    threeHouses: 11000000,
+    fourHouses: 13000000,
+    hotel: 15000000,
+    mortgagePrice: 1750000,
+  },
+  38: { type: "tax", quantity: 1000000 },
+  39: {
+    type: "property",
+    color: "blue",
+
+    name: "Монреал",
+    priceBuy: 4000000,
+
+    price: 500000,
+    oneHouse: 2000000,
+    twoHouses: 6000000,
+    threeHouses: 14000000,
+    fourHouses: 17000000,
+    hotel: 20000000,
+    mortgagePrice: 2000000,
+  },
+};
