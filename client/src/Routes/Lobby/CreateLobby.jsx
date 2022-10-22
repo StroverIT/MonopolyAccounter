@@ -39,7 +39,6 @@ export default function CreateLobby() {
         socketId: socket.id,
       }),
       (response) => {
-        socket.emit("refresh-lobbies", () => {});
         navigate(`/lobby/${response.lobby._id}#${response.creatorId}`);
       }
     );

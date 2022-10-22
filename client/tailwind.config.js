@@ -17,6 +17,9 @@ const customColors = {
   green: {
     DEFAULT: "#26A811",
   },
+  yellow: {
+    DEFAULT: "#FFFF33",
+  },
   white: {
     DEFAULT: "#FFFFFF",
   },

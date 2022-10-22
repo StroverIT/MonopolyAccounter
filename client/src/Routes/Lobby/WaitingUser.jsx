@@ -10,14 +10,14 @@ export default function WaitingUser() {
   let { id } = useParams();
   let navigate = useNavigate();
 
-  const { socket, lobbies, setLobbies } = useContext(SocketContext);
+  const { socket } = useContext(SocketContext);
 
   const [users, setUsers] = useState([]);
   const [currUser, setCurrentUser] = useState(null);
   useEffect(() => {
     const userId = window.location.href.toString().split("#")[1];
 
-    socket.emit(
+    socket?.emit(
       "get-lobby-users",
       JSON.stringify({ lobbyId: id }),
       (response) => {
@@ -27,11 +27,10 @@ export default function WaitingUser() {
         setCurrentUser(foundCreator);
       }
     );
-    socket.on("receive-user", (data) => {
-      console.log("data", data);
+    socket?.on("receive-user", (data) => {
       setUsers((prevState) => [...prevState, data.user]);
     });
-    socket.on("change-to-menu", (response) => {
+    socket?.on("change-to-menu", (response) => {
       const pageRed = `/game/${id}#${userId}`;
 
       navigate(pageRed);
@@ -44,10 +43,7 @@ export default function WaitingUser() {
 
   const startGameHandler = () => {
     const data = JSON.stringify({ lobby: id });
-    socket.emit("start-game", data, (response) => {
-      const pageRed = `${response.page}#${currUser._id}`;
-      navigate(pageRed);
-    });
+    socket.emit("start-game", data);
   };
   return (
     <div className="flex items-center justify-center h-screen ">

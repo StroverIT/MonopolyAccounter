@@ -1,62 +1,72 @@
-export const cards = [
+const cards = [
   {
     color: "brown",
-    colorToDisplay: "bg-color-brown",
+    colorToDisplay: "bg-cardColors-brown",
     upgrade: 500000,
     downgrade: 250000,
+    total: 2,
   },
   {
     color: "lightBlue",
     colorToDisplay: "bg-cardColors-lightBlue",
     upgrade: 500000,
     downgrade: 250000,
+    total: 3,
   },
   {
     color: "pink",
     colorToDisplay: "bg-cardColors-pink",
     upgrade: 1000000,
     downgrade: 500000,
+    total: 3,
   },
   {
     color: "orange",
     colorToDisplay: "bg-cardColors-orange",
     upgrade: 1000000,
     downgrade: 500000,
+    total: 3,
   },
   {
     color: "red",
     colorToDisplay: "bg-cardColors-red",
     upgrade: 1500000,
     downgrade: 750000,
+    total: 3,
   },
   {
     color: "yellow",
     colorToDisplay: "bg-cardColors-yellow",
     upgrade: 1500000,
     downgrade: 750000,
+    total: 3,
   },
   {
     color: "green",
     colorToDisplay: "bg-cardColors-green",
     upgrade: 2000000,
     downgrade: 1000000,
+    total: 3,
   },
   {
     color: "blue",
     colorToDisplay: "bg-cardColors-blue",
     upgrade: 2000000,
     downgrade: 1000000,
+    total: 2,
   },
   {
     color: "transport",
     colorToDisplay: "bg-cardColors-transport",
+    total: 4,
   },
   {
     color: "power_plant",
     colorToDisplay: "bg-cardColors-power_plant",
+    total: 4,
   },
 ];
-export const properties = {
+const properties = {
   0: {
     type: "giveMoney",
     quantity: 2000000,
@@ -473,4 +483,9 @@ export const properties = {
     hotel: 20000000,
     mortgagePrice: 2000000,
   },
+};
+
+module.exports = {
+  cards,
+  properties,
 };

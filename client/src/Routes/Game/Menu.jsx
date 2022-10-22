@@ -1,47 +1,30 @@
-import React, { useContext, useEffect } from "react";
-import { useState } from "react";
-
-// Icons
+import React, { useContext } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { GrHistory } from "react-icons/gr";
-import { useParams } from "react-router-dom";
-import Card from "../../Components/Game/Card";
 import MoneyDisplay from "../../Components/Game/MoneyDisplay";
-import { SocketContext } from "../../Routes/socketContext";
+import CardMenu from "./CardMenu";
 
-export default function Main() {
-  const userId = window.location.href.toString().split("#")[1];
-  let { userId: lobbyId } = useParams();
+import { GameRouterContext } from "./GameRouterContext";
 
-  const { socket } = useContext(SocketContext);
+export default function Menu() {
+  const { setRoute, data } = useContext(GameRouterContext);
 
-  const [data, setData] = useState({
-    fullName: "Emil Zlatinov",
-    role: "player",
-    icon: "Китайски Дракон",
-    cards: [],
-    // rollTurn: 3,
-  });
-  const cardsVar = data?.cards;
-
-  useEffect(() => {
-    socket.emit("get-game-user", JSON.stringify({ userId, lobbyId }), (res) => {
-      const user = res.user;
-      setData(user);
-    });
-  }, []);
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="w-10/12 bg-gray h-5/6">
         <div className="flex items-center justify-between">
-          <div>
+          <div
+            onClick={() => {
+              setRoute("menu");
+            }}
+          >
             <GiHamburgerMenu />
           </div>
           <div>
             <div className="text-xl text-primary-100 text-bold">
-              {data.fullName}
+              {data?.fullName}
             </div>
-            <div className="text-xs text-center text-white">{data.icon}</div>
+            <div className="text-xs text-center text-white">{data?.icon}</div>
           </div>
           <div>
             <GrHistory />
@@ -51,18 +34,7 @@ export default function Main() {
           <MoneyDisplay />
         </div>
         <h3 className="mb-4 text-xl text-center text-primary-100">Cards</h3>
-        <div className="grid grid-cols-2 px-2">
-          {data.cards.map((card) => {
-            return (
-              <Card
-                bgColor={card?.color}
-                total={card?.total}
-                ownTotal={card?.totalOwn}
-                properties={card?.properties}
-              />
-            );
-          })}
-        </div>
+        <CardMenu />
       </div>
     </div>
   );

@@ -12,16 +12,8 @@ import WaitingUser from "./Routes/Lobby/WaitingUser";
 import WaitingAdmin from "./Routes/Lobby/WaitingAdmin";
 
 // GameMenu
-import GameMenu from "./Routes/Game/Menu";
-import ColorCardsMenu from "./Routes/Game/ColorCardsMenu";
-import AdminPanel from "./Routes/Game/AdminPanel";
-import HamburgerMenu from "./Components/Game/HamburgerMenu";
+import MenuRouter from "./Routes/Game/MenuRouter";
 import BuyCardMenu from "./Routes/Game/BuyCardMenu";
-import AuctionMenu from "./Routes/Game/AuctionMenu";
-import TradeMenu from "./Routes/Game/Trading/TradeMenu";
-import TradingWith from "./Routes/Game/Trading/TradingWith";
-import TradeCardsMenu from "./Routes/Game/Trading/TradeCardsMenu";
-import LogsMenu from "./Routes/Game/LogsMenu";
 
 import { io } from "socket.io-client";
 
@@ -31,7 +23,7 @@ function App() {
   const [socket, setSocket] = useState();
 
   useEffect(() => {
-    const s = io("ws://localhost:5000");
+    const s = io("http://localhost:5000");
 
     setSocket(s);
 
@@ -50,7 +42,7 @@ function App() {
             <Route path=":id" element={<WaitingUser />} />
           </Route>
           <Route path="/game">
-            <Route path=":userId" element={<GameMenu />} />
+            <Route path=":userId" element={<MenuRouter />} />
           </Route>
           <Route path="/createLobby" element={<CreateLobby />} />
           <Route path="/lobby-join/:lobbyId" element={<LobbyProfile />} />

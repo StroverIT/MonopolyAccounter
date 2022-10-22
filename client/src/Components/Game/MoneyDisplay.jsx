@@ -18,11 +18,10 @@ export default function MoneyDisplay() {
 
   useEffect(() => {
     socket.on("refresh-money", (res) => {
-      console.log("money", res);
-      const users = res.users.joinedPlayers;
-      const found = users.find((user) => user._id.toString() === userId);
-      if (found) {
-        setData({ money: found.money, networth: found.networth });
+      const user = res.user;
+      console.log(res.user);
+      if (user) {
+        setData({ money: user.money, networth: user.networth });
       }
     });
     const data = JSON.stringify({ userId });

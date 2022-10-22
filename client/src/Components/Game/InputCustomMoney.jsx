@@ -13,8 +13,8 @@ export default function InputCustomMoney({
     e.preventDefault();
     let val = e.target.value;
 
-    if (val >= 1000000 && typePrice !== "m") {
-      val = val / 1000000;
+    if (val > 999 && typePrice !== "m") {
+      val = val / 1000;
       setTypePrice("m");
     }
 
@@ -22,7 +22,7 @@ export default function InputCustomMoney({
   };
   useEffect(() => {
     if (prevTypePrice === "m") {
-      setPrice(price * 1000000);
+      setPrice(price * 100);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typePrice]);

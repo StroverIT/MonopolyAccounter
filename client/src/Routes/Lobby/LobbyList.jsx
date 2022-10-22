@@ -9,7 +9,7 @@ export default function LobbyList() {
   const { socket } = useContext(SocketContext);
   const [lobbies, setLobbies] = useState([]);
   useEffect(() => {
-    socket.emit("get-lobbies", (response) => {
+    socket?.emit("get-lobbies", (response) => {
       const formatted = [];
       response.lobbies.forEach((lobby) => {
         if (lobby.isGameStarted) return;
@@ -20,13 +20,13 @@ export default function LobbyList() {
       });
       setLobbies(formatted);
     });
-    socket.on("refresh-lobbies", (data) => {
+    socket?.on("refresh-lobbies", (data) => {
       setLobbies(data);
     });
     return () => {
       socket.off("refresh-lobbies");
     };
-  }, [lobbies]);
+  }, []);
   return (
     <div className="container text-gray">
       <Link to="/createLobby" className="flex items-end justify-end mt-6 mb-10">

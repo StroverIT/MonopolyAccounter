@@ -33,6 +33,14 @@ code {
     background-color: theme(colors.primary.DEFAULT);
     color: theme(colors.bg-color);
   }
+  .red-white {
+    background-color: theme(colors.red.DEFAULT);
+    color: theme(colors.white.DEFAULT);
+  }
+  .green-white {
+    background-color: theme(colors.green.DEFAULT);
+    color: theme(colors.white.DEFAULT);
+  }
 }
 
 body {
@@ -41,4 +49,24 @@ body {
 select[editable] > button {
   color: red !important;
   stroke: #f00 !important;
+}
+
+.bg-red-animated {
+  background-color: theme(colors.red.DEFAULT);
+  animation: blink 1s infinite;
+}
+@keyframes blink {
+  0% {
+    transform: scale(0.5);
+    background: theme(colors.red.DEFAULT);
+  }
+  50% {
+    transform: scale(1);
+
+    background-color: #e78c8c;
+  }
+  100% {
+    transform: scale(0.5);
+    background: theme(colors.red.DEFAULT);
+  }
 }
