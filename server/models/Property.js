@@ -23,5 +23,8 @@ const Property = new Schema({
     type: Boolean,
     default: false,
   },
+  twoTransport: Number,
+  threeTransport: Number,
+  fourTransport: Number,
 });
 module.exports = model("Property", Property);
