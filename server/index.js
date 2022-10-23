@@ -52,13 +52,25 @@ io.on("connection", (socket) => {
     const lobbies = await Lobby.find({});
     cb({ lobbies });
   });
-  socket.on("join-lobby", async (lobbyId, cb) => {
-    const lobbyUsers = await Lobby.findOne({ _id: lobbyId }).populate(
-      "joinedPlayers"
-    );
-    cb({
-      users: lobbyUsers,
-    });
+  socket.on("join-lobby", async (data) => {
+    const { userId, lobbyId } = JSON.parse(data);
+
+    socket.join(userId.toString());
+    socket.join(lobbyId.toString());
+  });
+  socket.on("get-user-data", async (data, cb) => {
+    const { userId, lobbyId } = JSON.parse(data);
+    const user = await User.findOne({ _id: userId });
+
+    cb({ user });
+  });
+  socket.on("get-lobby-users", async (data, cb) => {
+    const { lobbyId } = JSON.parse(data);
+
+    const users = await Lobby.findOne({ _id: lobbyId })
+      .populate("joinedPlayers")
+      .select("joinedPlayers");
+    cb({ users });
   });
   socket.on("create-user", async (data, cb) => {
     const { fullName, icon, lobbyId, socketId } = JSON.parse(data);
@@ -93,7 +105,6 @@ io.on("connection", (socket) => {
     });
   });
   socket.on("start-game", async (data) => {
-    console.log(data);
     const { lobby } = JSON.parse(data);
     await Lobby.updateOne({ _id: lobby }, { $set: { isGameStarted: true } });
     io.in(lobby).emit("change-to-menu", {
@@ -103,19 +114,9 @@ io.on("connection", (socket) => {
     const users = await Lobby.findOne({ _id: lobby })
       .populate("joinedPlayers")
       .select("joinedPlayers");
-    io.in(lobby).emit("game-init", users);
+    // io.in(lobby).emit("game-init", users);
   });
-  socket.on("get-lobby-users", async (data, cb) => {
-    const { lobbyId } = JSON.parse(data);
-    const lobby = await Lobby.findOne({ _id: lobbyId })
-      .populate("joinedPlayers")
-      .select("joinedPlayers");
-    const newLobby = await Lobby.find({});
-    cb({
-      lobby,
-      newLobby,
-    });
-  });
+
   socket.on("money-init", async (data, cb) => {
     const { userId } = JSON.parse(data);
 
@@ -153,6 +154,7 @@ io.on("connection", (socket) => {
   socket.on("change-index-func", async (data) => {
     const { userId, lobbyId, index, typeAction } = JSON.parse(data);
     // getting user for prev index
+    console.log(socket.rooms);
 
     const user = await User.findOne({ _id: userId });
     const userIndex = user.index;
@@ -185,7 +187,6 @@ io.on("connection", (socket) => {
       ownerId: userId,
       color: property.color,
     });
-    console.log(isCreated);
     let cardId;
     if (!isCreated) {
       const cardNew = await Card.create(cardFather);
@@ -193,8 +194,6 @@ io.on("connection", (socket) => {
     } else {
       cardId = isCreated._id;
     }
-
-    console.log("vliza");
     io.in(userId).emit("change-index", {
       property,
       userId,
@@ -205,26 +204,51 @@ io.on("connection", (socket) => {
     // Getting data from client
     const { userId, lobbyId, property, cardId } = JSON.parse(data);
 
-    await Card.updateOne(
-      { _id: cardId },
-      {
-        $set: { ownerId: userId },
-        $push: { properties: property },
-        $inc: { totalOwn: 1 },
-      }
-    );
+    const card = await Card.findOne({ _id: cardId });
+    // If property is not bought
+    if (!card.ownerId || card.ownerId == userId) {
+      await Card.updateOne(
+        { _id: cardId },
+        {
+          $set: { ownerId: userId },
+          $push: { properties: property },
+          $inc: { totalOwn: 1 },
+        }
+      );
+      await User.updateOne(
+        { _id: userId },
+        {
+          $inc: {
+            money: -property.priceBuy,
+            networth: -property.mortgagePrice,
+          },
+          $addToSet: { cards: cardId },
+        }
+      );
+    } else if (card.ownerId != userId) {
+      const card = await Card.create({
+        total: card.total,
+        colorToDisplay: card.colorToDisplay,
+        totalOwn: 1,
+        ownerId: userId,
+        upgrade: card.upgrade,
+        downgrade: card.downgrade,
+        properties: [property._id],
+      });
+      await User.updateOne(
+        { _id: userId },
+        {
+          $inc: {
+            money: -property.priceBuy,
+            networth: -property.mortgagePrice,
+          },
+          $addToSet: { cards: card._id },
+        }
+      );
+    }
 
     // Updating the user money
-    await User.updateOne(
-      { _id: userId },
-      {
-        $inc: {
-          money: -property.priceBuy,
-          networth: -property.mortgagePrice,
-        },
-        $addToSet: { cards: cardId },
-      }
-    );
+
     // Get lobby users
 
     cb({ message: "okey" });
@@ -308,7 +332,6 @@ io.on("connection", (socket) => {
     }
     if (!isMortgage) {
       const price = property.mortgagePrice * 1.1;
-      console.log(price);
       await User.updateOne(
         { _id: userId },
         {
@@ -386,7 +409,10 @@ io.on("connection", (socket) => {
           $inc: { totalOwn: 1 },
         }
       );
-      await User.updateOne({ _id: winner._id }, { $push: { cards: card._id } });
+      await User.updateOne(
+        { _id: winner._id },
+        { $addToSet: { cards: card._id } }
+      );
     } else if (card.ownerId == winner._id) {
       await Card.updateOne(
         { ownerId: winner._id },
@@ -404,7 +430,7 @@ io.on("connection", (socket) => {
       });
       await User.updateOne(
         { _id: winner._id },
-        { $push: { cards: newCard._id } }
+        { $addToSet: { cards: newCard._id } }
       );
     }
     await Auction.deleteOne({ _id: auction._id });
