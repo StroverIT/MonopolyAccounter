@@ -9,7 +9,6 @@ import LobbyList from "./Routes/Lobby/LobbyList";
 import LobbyProfile from "./Routes/Lobby/LobbyProfile";
 
 import WaitingUser from "./Routes/Lobby/WaitingUser";
-import WaitingAdmin from "./Routes/Lobby/WaitingAdmin";
 
 // GameMenu
 import MenuRouter from "./Routes/Game/MenuRouter";
@@ -34,20 +33,23 @@ function App() {
 
   return (
     <div className="">
-      <SocketContext.Provider value={{ socket }}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/lobby">
-            <Route index element={<LobbyList />} />
-            <Route path=":id" element={<WaitingUser />} />
-          </Route>
-          <Route path="/game">
-            <Route path=":userId" element={<MenuRouter />} />
-          </Route>
-          <Route path="/createLobby" element={<CreateLobby />} />
-          <Route path="/lobby-join/:lobbyId" element={<LobbyProfile />} />
-        </Routes>
-      </SocketContext.Provider>
+      {socket && (
+        <SocketContext.Provider value={{ socket }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/lobby">
+              <Route index element={<LobbyList />} />
+              <Route path=":id" element={<WaitingUser />} />
+            </Route>
+            <Route path="/game">
+              <Route path=":userId" element={<MenuRouter />} />
+            </Route>
+            <Route path="/createLobby" element={<CreateLobby />} />
+            <Route path="/lobby-join/:lobbyId" element={<LobbyProfile />} />
+          </Routes>
+        </SocketContext.Provider>
+      )}
+      {!socket && <div>Loading.... </div>}
       {/* <img src={logo} className="App-logo" alt="logo" /> */}
     </div>
   );
