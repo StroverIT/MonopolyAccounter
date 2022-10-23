@@ -63,7 +63,7 @@ const cards = [
   {
     color: "power_plant",
     colorToDisplay: "bg-cardColors-power_plant",
-    total: 4,
+    total: 2,
   },
 ];
 const properties = {
