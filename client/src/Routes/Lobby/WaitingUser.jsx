@@ -10,6 +10,8 @@ export default function WaitingUser() {
   let { id } = useParams();
   let navigate = useNavigate();
 
+  const userId = window.location.href.toString().split("#")[1];
+
   const { socket } = useContext(SocketContext);
 
   const [users, setUsers] = useState([]);
@@ -17,20 +19,18 @@ export default function WaitingUser() {
   useEffect(() => {
     const userId = window.location.href.toString().split("#")[1];
 
-    socket?.emit(
-      "get-lobby-users",
-      JSON.stringify({ lobbyId: id }),
-      (response) => {
-        const joined = response.lobby.joinedPlayers;
-        setUsers(joined);
-        const foundCreator = joined.find((user) => user._id == userId);
-        setCurrentUser(foundCreator);
-      }
-    );
-    socket?.on("receive-user", (data) => {
+    socket.emit("get-lobby-users", JSON.stringify({ lobbyId: id }), (res) => {
+      const joined = res.users.joinedPlayers;
+      console.log(res);
+      setUsers(joined);
+      const foundCreator = joined.find((user) => user._id == userId);
+      setCurrentUser(foundCreator);
+    });
+
+    socket.on("receive-user", (data) => {
       setUsers((prevState) => [...prevState, data.user]);
     });
-    socket?.on("change-to-menu", (response) => {
+    socket.on("change-to-menu", (response) => {
       const pageRed = `/game/${id}#${userId}`;
 
       navigate(pageRed);
@@ -40,6 +40,14 @@ export default function WaitingUser() {
       socket.off("change-to-menu");
     };
   }, []);
+
+  useEffect(() => {
+    const sendData = JSON.stringify({ userId, lobbyId: id });
+    socket.emit("join-lobby", sendData);
+    return () => {
+      socket.off("join-lobby");
+    };
+  }, [socket]);
 
   const startGameHandler = () => {
     const data = JSON.stringify({ lobby: id });
