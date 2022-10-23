@@ -1,12 +1,25 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { GiHamburgerMenu } from "react-icons/gi";
+import { useParams } from "react-router-dom";
 import { GameRouterContext } from "../../../Routes/Game/GameRouterContext";
+import { SocketContext } from "../../../Routes/socketContext";
 import User from "./User";
 
 export default function Main({ setUserMenu, setRoute: setRoutePanel }) {
-  const { allUsers, setRoute } = useContext(GameRouterContext);
+  const { socket } = useContext(SocketContext);
+  const { setRoute } = useContext(GameRouterContext);
 
+  let { userId: lobbyId } = useParams();
+
+  const [allUsers, setAllUsers] = useState([]);
+  useEffect(() => {
+    socket.emit("get-lobby-users", JSON.stringify({ lobbyId }), (res) => {
+      console.log("res", res);
+      const { users } = res;
+      setAllUsers(users.joinedPlayers);
+    });
+  }, []);
   return (
     <div className="h-full flex items-center justify-center ">
       <div className="h-5/6 w-10/12 bg-gray relative pb-10 pt-5">
