@@ -22,6 +22,10 @@ const User = new Schema({
     default: 0,
   },
   cards: [{ type: Schema.Types.ObjectId, ref: "Card" }],
+  index: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = model("User", User);
