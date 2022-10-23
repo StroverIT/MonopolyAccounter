@@ -27,6 +27,7 @@ export default function AuctionMenu({ cardData, auction }) {
   const { socket } = useContext(SocketContext);
   const { data, setRoute, setAuction, setCardShow } =
     useContext(GameRouterContext);
+
   let { userId: lobbyId } = useParams();
 
   const [typePrice, setTypePrice] = useState("k");
@@ -52,13 +53,10 @@ export default function AuctionMenu({ cardData, auction }) {
       setWiner(auctionData.lastBidder);
       setPriceBid(auctionData.amountBid);
     });
-    let interval;
-    if (time > 0) {
-      interval = setInterval(() => {
-        const getLastedTime = getLastingSeconds(auction.estimatedTime);
-        setTime(getLastedTime);
-      }, 1000);
-    }
+    let interval = setInterval(() => {
+      const getLastedTime = getLastingSeconds(auction.estimatedTime);
+      setTime(getLastedTime);
+    }, 1000);
 
     return () => {
       socket.off("auction-refresh-time");
@@ -79,8 +77,6 @@ export default function AuctionMenu({ cardData, auction }) {
       socket.emit("auction-winner", resData, (res) => {
         if (res.message === "success") {
           setRoute("main");
-          setAuction(null);
-          setCardShow(null);
         }
       });
     }
