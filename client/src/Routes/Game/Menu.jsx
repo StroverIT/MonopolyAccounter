@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { GrHistory } from "react-icons/gr";
 import MoneyDisplay from "../../Components/Game/MoneyDisplay";
@@ -9,6 +9,10 @@ import { GameRouterContext } from "./GameRouterContext";
 export default function Menu() {
   const { setRoute, data } = useContext(GameRouterContext);
 
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    setUser(data);
+  }, [data]);
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="w-10/12 bg-gray h-5/6">
@@ -22,9 +26,9 @@ export default function Menu() {
           </div>
           <div>
             <div className="text-xl text-primary-100 text-bold">
-              {data?.fullName}
+              {user?.fullName}
             </div>
-            <div className="text-xs text-center text-white">{data?.icon}</div>
+            <div className="text-xs text-center text-white">{user?.icon}</div>
           </div>
           <div>
             <GrHistory />
