@@ -28,7 +28,7 @@ export default function CardMenu() {
       socket.off("refresh-cards");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data]);
 
   return (
     <div className="grid grid-cols-2 px-2">
