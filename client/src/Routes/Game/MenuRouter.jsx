@@ -32,20 +32,10 @@ export default function MenuRouter() {
   const [data, setData] = useState({
     // rollTurn: 3,
   });
-  const [allUsers, setAllUsers] = useState(null);
 
   useEffect(() => {
-    socket?.on("game-init", (res) => {
-      const users = res.joinedPlayers;
-      console.log(users);
-      const found = users.find(
-        (user) => user._id.toString() === userId.toString()
-      );
-      console.log("found", found);
-      if (found) setData(found);
-      setAllUsers(users);
-    });
     socket.on("change-index", (res) => {
+      console.log(res);
       if (res) {
         setCardMenu(res);
         setRoute("buyCard");
@@ -57,13 +47,24 @@ export default function MenuRouter() {
       setRoute("auction");
       setAuction(auction);
     });
+    socket.emit("get-user-data", JSON.stringify({ userId, lobbyId }), (res) => {
+      const { user } = res;
+      setData(user);
+    });
     return () => {
       socket.off("game-init");
       socket.off("change-index");
       socket.off("auction-menu");
     };
   }, []);
-
+  useEffect(() => {
+    const sendData = JSON.stringify({ userId, lobbyId });
+    socket.emit("join-lobby", sendData);
+    console.log("lobby-join");
+    return () => {
+      socket.off("join-lobby");
+    };
+  }, [socket]);
   useEffect(() => {
     if (route === "main") setRouteComponent(<Menu />);
     else if (route === "menu") setRouteComponent(<HamburgerMenu />);
@@ -82,14 +83,13 @@ export default function MenuRouter() {
         setRoute,
         route,
         data,
-        allUsers,
         setCardMenu,
         user: data,
         cardShow,
         setCardShow,
       }}
     >
-      {routeComponent}
+      {socket && routeComponent}
     </GameRouterContext.Provider>
   );
 }
