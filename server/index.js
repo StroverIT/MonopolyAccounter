@@ -57,6 +57,7 @@ io.on("connection", (socket) => {
 
     socket.join(userId.toString());
     socket.join(lobbyId.toString());
+    // Get 1 milion for recconect, bcs is playing on telephone
   });
   socket.on("get-user-data", async (data, cb) => {
     const { userId, lobbyId } = JSON.parse(data);
@@ -159,8 +160,20 @@ io.on("connection", (socket) => {
     const user = await User.findOne({ _id: userId });
     const userIndex = user.index;
     const getCard = properties[index];
+    if (getCard.type == "none") return;
+    else if (getCard.type == "tax") {
+      await User.updateOne(
+        { _id: userId },
+        { $inc: { money: -getCard.quantity, networth: -getCard.quantity } }
+      );
+      return;
+    } else if (getCard.type == "giveMoney") {
+      await User.updateOne(
+        { _id: userId },
+        { $inc: { money: getCard.quanity, networth: getCard.quanity } }
+      );
+    }
 
-    const cardFather = cards.find((card) => card.color == getCard.color);
     // Add index
 
     // Remove index
@@ -179,21 +192,40 @@ io.on("connection", (socket) => {
 
     // If card is not taken, send for buying
 
-    getCard.housePrice = cardFather.upgrade;
-    getCard.colorToDisplay = cardFather.colorToDisplay;
-
     const property = await Property.create(getCard);
-    const isCreated = await Card.findOne({
-      ownerId: userId,
-      color: property.color,
-    });
     let cardId;
-    if (!isCreated) {
-      const cardNew = await Card.create(cardFather);
-      cardId = cardNew._id;
-    } else {
-      cardId = isCreated._id;
+
+    if (property.type == "property") {
+      const cardFather = cards.find((card) => card.color == getCard.color);
+
+      const isCreated = await Card.findOne({
+        ownerId: userId,
+        color: property.color,
+      });
+
+      if (!isCreated) {
+        const cardNew = await Card.create(cardFather);
+        cardId = cardNew._id;
+      } else {
+        cardId = isCreated._id;
+      }
+      getCard.housePrice = cardFather.upgrade;
+      getCard.colorToDisplay = cardFather.colorToDisplay;
+    } else if (property.type == "transport" || property.type == "power_plant") {
+      const cardFather = cards.find((card) => card.color == getCard.type);
+
+      const isCreated = await Card.findOne({
+        ownerId: userId,
+        color: property.type,
+      });
+      if (!isCreated) {
+        const cardNew = await Card.create(cardFather);
+        cardId = cardNew._id;
+      } else {
+        cardId = isCreated._id;
+      }
     }
+
     io.in(userId).emit("change-index", {
       property,
       userId,
@@ -226,15 +258,17 @@ io.on("connection", (socket) => {
         }
       );
     } else if (card.ownerId != userId) {
-      const card = await Card.create({
+      const data = {
         total: card.total,
         colorToDisplay: card.colorToDisplay,
         totalOwn: 1,
         ownerId: userId,
-        upgrade: card.upgrade,
-        downgrade: card.downgrade,
         properties: [property._id],
-      });
+      };
+      if (card.type == "property") {
+        (data.upgrade = card.upgrade), (data.downgrade = card.downgrade);
+      }
+      const card = await Card.create(data);
       await User.updateOne(
         { _id: userId },
         {
